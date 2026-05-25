@@ -8,25 +8,51 @@ radio-agnostic.
 
 **Group ID:** `pt.paradigmshift.babel`
 **Artifact ID:** `babel-radio-api`
-**Current version:** `0.1.0`
+**Current version:** `0.2.0`
 **Tested with:** `pt.paradigmshift.babel:babel-core:1.0.0`.
 **Consumed by:** `babel-lora-protocol`, `babel-zigbee-protocol`.
 
 ---
 
-## API surface
+## Protocol & event identifiers
 
-| Type | ID | Purpose |
+This module follows the Babel ID convention used across the ParadigmShift
+workspace: protocol IDs jump by 100; within each protocol, each handler
+class (notifications, messages, requests+replies, timers) numbers from
+`protocol_id + 1` upward as four independent pools.
+
+`babel-radio-api` defines no concrete protocol — it is API-only. It
+**reserves the notional protocol slot 400** so its shared events have an
+unambiguous numbering window. No concrete protocol in the workspace may
+use slot 400.
+
+| Type | Handler class | ID | Purpose |
+|---|---|---|---|
+| `SendRadioPacketRequest`         | request/reply | `401` | Unicast a payload to a specific `RadioAddress` |
+| `BroadcastRadioPacketRequest`    | request/reply | `402` | Broadcast a payload to every one-hop peer on a given radio |
+| `RadioPacketReceivedNotification`| notification  | `401` | One per received packet — fan-out to every subscriber, filter by `getSourceProto()` |
+| `RadioSendFailedNotification`    | notification  | `402` | Synchronous send failure (MTU exceeded, destination unknown, driver throw) |
+
+Notifications and requests are separate handler maps inside
+`GenericProtocol`, so the request id `401` and the notification id `401`
+do not collide — they go to different handler tables on the same
+subscriber.
+
+### Migration from 0.1.x
+
+The IDs above are a breaking change vs. 0.1.x — the old values were:
+
+| Type | 0.1.x ID | 0.2.0 ID |
 |---|---|---|
-| `SendRadioPacketRequest`         | `100` (request)      | Unicast a payload to a specific `RadioAddress` |
-| `BroadcastRadioPacketRequest`    | `101` (request)      | Broadcast a payload to every one-hop peer on a given radio |
-| `RadioPacketReceivedNotification`| `100` (notification) | One per received packet — fan-out to every subscriber, filter by `getSourceProto()` |
-| `RadioSendFailedNotification`    | `101` (notification) | Synchronous send failure (MTU exceeded, destination unknown, driver throw) |
+| `SendRadioPacketRequest`         | request 100      | request 401      |
+| `BroadcastRadioPacketRequest`    | request 101      | request 402      |
+| `RadioPacketReceivedNotification`| notification 100 | notification 401 |
+| `RadioSendFailedNotification`    | notification 101 | notification 402 |
 
-All IDs are constants on the corresponding class. Babel scopes IDs per
-registering protocol, so a `LoRaProtocol` and a `ZigBeeProtocol` registering
-handlers for `SendRadioPacketRequest.REQUEST_ID` is not a conflict —
-each receives only the requests targeted at its own `PROTOCOL_ID`.
+The 0.1.x range collided with gateway-internal notification IDs in
+`stoneflux-edgegateway` (`SensorReadingNotification` was at 101); the new
+range is reserved cleanly across the workspace. Consumers must bump and
+recompile.
 
 ## RadioAddress
 
@@ -96,7 +122,7 @@ Add to your `pom.xml`:
     <dependency>
         <groupId>pt.paradigmshift.babel</groupId>
         <artifactId>babel-radio-api</artifactId>
-        <version>0.1.0</version>
+        <version>0.2.0</version>
     </dependency>
 </dependencies>
 ```
@@ -128,8 +154,8 @@ mvn deploy    # publish to maven.paradigmshift.pt (requires REPOSILITE_TOKEN)
 Push a version tag — CI deploys automatically:
 
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+git tag v0.2.0
+git push origin v0.2.0
 ```
 
 ---

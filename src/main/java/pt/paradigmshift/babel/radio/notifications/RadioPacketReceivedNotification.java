@@ -19,10 +19,13 @@ import pt.unl.fct.di.novasys.babel.generic.ProtoNotification;
  * <p>All subclasses share the same {@link #NOTIFICATION_ID} via
  * {@code super(NOTIFICATION_ID)} — a single subscription captures traffic
  * from every radio protocol on the gateway.
+ *
+ * <p><b>Handler class:</b> notification. <b>ID:</b> {@value #NOTIFICATION_ID}
+ * — reserved in the {@code babel-radio-api} slot (notional protocol id 400).
  */
 public class RadioPacketReceivedNotification extends ProtoNotification {
 
-    public static final short NOTIFICATION_ID = 100;
+    public static final short NOTIFICATION_ID = 401;
 
     private final short sourceProto;
     private final RadioAddress origin;

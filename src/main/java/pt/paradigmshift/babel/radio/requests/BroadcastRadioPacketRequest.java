@@ -18,10 +18,13 @@ import pt.unl.fct.di.novasys.babel.generic.ProtoRequest;
  * <p>Routing: send to the {@code PROTOCOL_ID} of the radio protocol you
  * want to broadcast through. There is no destination address on a broadcast
  * request — the application chooses the radio explicitly.
+ *
+ * <p><b>Handler class:</b> request/reply. <b>ID:</b> {@value #REQUEST_ID}
+ * — reserved in the {@code babel-radio-api} slot (notional protocol id 400).
  */
 public class BroadcastRadioPacketRequest extends ProtoRequest {
 
-    public static final short REQUEST_ID = 101;
+    public static final short REQUEST_ID = 402;
 
     private final short sourceProto;
     private final byte[] payload;

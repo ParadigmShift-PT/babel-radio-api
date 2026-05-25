@@ -16,10 +16,13 @@ import pt.unl.fct.di.novasys.babel.generic.ProtoNotification;
  *
  * <p>{@link #getDestination()} is {@code null} for broadcast failures,
  * since a broadcast has no single destination.
+ *
+ * <p><b>Handler class:</b> notification. <b>ID:</b> {@value #NOTIFICATION_ID}
+ * — reserved in the {@code babel-radio-api} slot (notional protocol id 400).
  */
 public class RadioSendFailedNotification extends ProtoNotification {
 
-    public static final short NOTIFICATION_ID = 101;
+    public static final short NOTIFICATION_ID = 402;
 
     private final short sourceProto;
     private final RadioAddress destination;

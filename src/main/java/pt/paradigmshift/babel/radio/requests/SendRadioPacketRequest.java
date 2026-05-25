@@ -14,10 +14,13 @@ import pt.unl.fct.di.novasys.babel.generic.ProtoRequest;
  *
  * <p>Routing: send this request to {@code destination.owningProtocolId()} —
  * the address knows which radio protocol owns it.
+ *
+ * <p><b>Handler class:</b> request/reply. <b>ID:</b> {@value #REQUEST_ID}
+ * — reserved in the {@code babel-radio-api} slot (notional protocol id 400).
  */
 public class SendRadioPacketRequest extends ProtoRequest {
 
-    public static final short REQUEST_ID = 100;
+    public static final short REQUEST_ID = 401;
 
     private final short sourceProto;
     private final RadioAddress destination;
