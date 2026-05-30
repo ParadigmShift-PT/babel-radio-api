@@ -6,7 +6,7 @@
 
     <groupId>pt.paradigmshift.babel</groupId>
     <artifactId>babel-radio-api</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <name>Babel Radio API</name>
     <description>
         Shared Babel request / notification surface for radio-style transport
@@ -52,7 +52,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <babel.core.version>1.0.0</babel.core.version>
+        <babel.core.version>1.0.1</babel.core.version>
     </properties>
 
     <build>
