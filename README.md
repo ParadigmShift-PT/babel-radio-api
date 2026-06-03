@@ -30,7 +30,7 @@ use slot 400.
 |---|---|---|---|
 | `SendRadioPacketRequest`         | request/reply | `401` | Unicast a payload to a specific `RadioAddress` |
 | `BroadcastRadioPacketRequest`    | request/reply | `402` | Broadcast a payload to every one-hop peer on a given radio |
-| `RadioPacketReceivedNotification`| notification  | `401` | One per received packet — fan-out to every subscriber, filter by `getSourceProto()` |
+| `RadioPacketReceivedNotification`| notification  | `401` | One per received packet — fan-out to every subscriber, filter by `getDestProto()` |
 | `RadioSendFailedNotification`    | notification  | `402` | Synchronous send failure (MTU exceeded, destination unknown, driver throw) |
 
 Notifications and requests are separate handler maps inside
@@ -82,7 +82,7 @@ parameter Babel passes to the handler tells you which protocol fired it:
 ```java
 subscribeNotification(RadioPacketReceivedNotification.NOTIFICATION_ID,
         (n, localSrc) -> {
-    if (n.getSourceProto() != MY_PROTOCOL_ID) return;   // not for our app proto
+    if (n.getDestProto() != MY_PROTOCOL_ID) return;   // not addressed to our app proto
     if (localSrc == LoRaProtocol.PROTOCOL_ID) {
         // arrived via LoRa
     } else if (localSrc == ZigBeeProtocol.PROTOCOL_ID) {

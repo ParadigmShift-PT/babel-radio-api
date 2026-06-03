@@ -6,8 +6,9 @@ import pt.unl.fct.di.novasys.babel.generic.ProtoNotification;
 /**
  * Delivered when a {@link pt.paradigmshift.babel.radio.requests.SendRadioPacketRequest}
  * or {@link pt.paradigmshift.babel.radio.requests.BroadcastRadioPacketRequest}
- * could not be transmitted. Subscribers filter on {@link #getSourceProto()}
- * (the requester's {@code PROTOCOL_ID}) just as for inbound packets.
+ * could not be transmitted. Carries the {@link #getDestProto()} of the failed
+ * send (the value the requester passed); a requester recognises its own failed
+ * send by matching it, just as receivers filter inbound packets on it.
  *
  * <p>Synchronous failures only: payload exceeded the MTU, destination
  * unknown to the radio, the driver threw on transmit. Asynchronous radio-
@@ -24,20 +25,21 @@ public class RadioSendFailedNotification extends ProtoNotification {
 
     public static final short NOTIFICATION_ID = 402;
 
-    private final short sourceProto;
+    private final short destProto;
     private final RadioAddress destination;
     private final String reason;
 
-    public RadioSendFailedNotification(short sourceProto,
+    public RadioSendFailedNotification(short destProto,
                                        RadioAddress destination,
                                        String reason) {
         super(NOTIFICATION_ID);
-        this.sourceProto = sourceProto;
+        this.destProto = destProto;
         this.destination = destination;
         this.reason = reason;
     }
 
-    public short getSourceProto() { return sourceProto; }
+    /** Destination protocol id of the failed send (the value the requester passed). */
+    public short getDestProto() { return destProto; }
 
     /** May be {@code null} for broadcast failures. */
     public RadioAddress getDestination() { return destination; }

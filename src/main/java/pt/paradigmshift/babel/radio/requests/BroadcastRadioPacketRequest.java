@@ -26,21 +26,22 @@ public class BroadcastRadioPacketRequest extends ProtoRequest {
 
     public static final short REQUEST_ID = 402;
 
-    private final short sourceProto;
+    private final short destProto;
     private final byte[] payload;
 
     /**
-     * @param sourceProto numeric ID of the sending protocol (its
-     *                    {@code PROTOCOL_ID})
-     * @param payload     bytes to broadcast; must fit within the radio MTU
+     * @param destProto id of the protocol on the receiving nodes that should
+     *                  handle this payload (by convention the sender's own
+     *                  {@code PROTOCOL_ID})
+     * @param payload   bytes to broadcast; must fit within the radio MTU
      */
-    public BroadcastRadioPacketRequest(short sourceProto, byte[] payload) {
+    public BroadcastRadioPacketRequest(short destProto, byte[] payload) {
         super(REQUEST_ID);
-        this.sourceProto = sourceProto;
+        this.destProto = destProto;
         this.payload = payload;
     }
 
-    public short getSourceProto() { return sourceProto; }
+    public short getDestProto() { return destProto; }
 
     public byte[] getPayload() { return payload; }
 }

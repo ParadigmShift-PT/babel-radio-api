@@ -6,9 +6,12 @@ import pt.unl.fct.di.novasys.babel.generic.ProtoNotification;
 /**
  * Delivered to every protocol that subscribes to it, for every packet
  * received by a radio Babel protocol. Subscribers filter on
- * {@link #getSourceProto()} to keep only the traffic addressed to their
- * protocol — by convention the remote sender stamps its own
- * {@code PROTOCOL_ID} there.
+ * {@link #getDestProto()} to keep only the traffic addressed to their
+ * protocol: the value is the <b>destination protocol id</b> — the id of the
+ * local protocol the frame is for. (By Babel's symmetric "protocol N talks
+ * to protocol N" convention a remote peer stamps its own {@code PROTOCOL_ID},
+ * which on this side is the destination; an asymmetric sender such as a
+ * µBabel sensor stamps the gateway protocol's id directly.)
  *
  * <p>This notification is intentionally radio-agnostic: it carries only the
  * minimum fields every radio can supply. Concrete radio protocols may
@@ -27,20 +30,21 @@ public class RadioPacketReceivedNotification extends ProtoNotification {
 
     public static final short NOTIFICATION_ID = 401;
 
-    private final short sourceProto;
+    private final short destProto;
     private final RadioAddress origin;
     private final byte[] payload;
 
-    public RadioPacketReceivedNotification(short sourceProto,
+    public RadioPacketReceivedNotification(short destProto,
                                            RadioAddress origin,
                                            byte[] payload) {
         super(NOTIFICATION_ID);
-        this.sourceProto = sourceProto;
+        this.destProto = destProto;
         this.origin = origin;
         this.payload = payload;
     }
 
-    public short getSourceProto() { return sourceProto; }
+    /** Destination protocol id: the local Babel protocol this frame is addressed to. */
+    public short getDestProto() { return destProto; }
 
     public RadioAddress getOrigin() { return origin; }
 
