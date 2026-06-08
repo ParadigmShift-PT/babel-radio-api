@@ -6,7 +6,7 @@
 
     <groupId>pt.paradigmshift.babel</groupId>
     <artifactId>babel-radio-api</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
     <name>Babel Radio API</name>
     <description>
         Shared Babel request / notification surface for radio-style transport
@@ -53,10 +53,12 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <babel.core.version>1.0.1</babel.core.version>
+        <junit.version>5.10.2</junit.version>
     </properties>
 
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -66,6 +68,11 @@
                     <source>17</source>
                     <target>17</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -133,6 +140,12 @@
             <groupId>pt.paradigmshift.babel</groupId>
             <artifactId>babel-core</artifactId>
             <version>${babel.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
