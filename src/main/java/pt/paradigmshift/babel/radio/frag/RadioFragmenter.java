@@ -54,7 +54,7 @@ public final class RadioFragmenter {
      * bytes of radio payload.
      *
      * @param enveloped     the bytes to send ([destProto][user payload])
-     * @param frameCapacity max radio-payload bytes per frame (e.g. 232 on LoRa,
+     * @param frameCapacity max radio-payload bytes per frame (e.g. 229 on LoRa,
      *                      121 on ZigBee)
      * @param msgId         per-sender rolling id grouping these fragments
      *                      (only the low 8 bits are used)

@@ -19,7 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class RadioFragmentationTest {
 
-    private static final int LORA_CAP = 232;
+    // 229 = the LoRa FIXED-mode frame capacity (240-B buffer − 3-B routing
+    // prefix − 8-B header); matches LoRaProtocol.FRAME_PAYLOAD_CAPACITY and
+    // uBabel's LORA_MAX_PAYLOAD_SIZE.
+    private static final int LORA_CAP = 229;
     private static final int ZIGBEE_CAP = 121;
 
     private static byte[] ramp(int n) {
